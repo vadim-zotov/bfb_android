@@ -1,0 +1,43 @@
+<resources>
+    <string name="action_search">Search</string>
+
+    <string name="title_my_profile">My profile</string>
+    <string name="title_user">User</string>
+    <string name="title_directory">Directory</string>
+    <string name="title_additional_skills">Additional skills</string>
+    <string name="title_interests">Interests</string>
+    <string name="title_job_related_skills">Job related skills</string>
+
+    <string name="app_name">Chairlift</string>
+    <string name="action_settings">Settings</string>
+    <string name="login_remeber_me">Remember me</string>
+    <string name="my_profile_employee_since">Employee since </string>
+    <string name="my_profile_about_me">About me</string>
+    <string name="my_profile_skills_interests">My Skills + Interests</string>
+    <string name="my_profile_job_related_skills">Job related additionalSkills</string>
+    <string name="my_profile_additional_skills">Additional additionalSkills</string>
+    <string name="my_profile_interests">Interests</string>
+
+    <string name="my_profile_additional_info">Additional Info</string>
+    <string name="my_profile_home_phone">Home phone</string>
+    <string name="my_profile_home_email">Home Email</string>
+    <string name="my_profile_emeregency_contact">Emeregency Contact</string>
+    <string name="my_profile_additional_medical_info">Additional Medical Info</string>
+    <string name="my_profile_birthday">Birthday</string>
+    <string name="my_profile_college">College</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="navigation_item_1">Home</string>
+    <string name="navigation_item_2">Events</string>
+
+    <string name="menu_my_profile">My profile</string>
+    <string name="menu_directory">Directory</string>
+    <string name="menu_logout">Logout</string>
+
+    <string name="closeDrawer">Navigation View</string>
+    <string name="openDrawer">Navigation View Closed</string>
+
+    <string name="loading">Loading</string>
+
+</resources>
