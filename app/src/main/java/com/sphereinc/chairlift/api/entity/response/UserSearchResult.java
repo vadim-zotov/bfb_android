@@ -1,14 +1,15 @@
-package com.sphereinc.chairlift.api.entity;
+package com.sphereinc.chairlift.api.entity.response;
 
 
 import com.google.gson.annotations.SerializedName;
+import com.sphereinc.chairlift.api.entity.User;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class UserSearchResult implements Serializable {
 
-    @SerializedName("emergency_role")
+    @SerializedName("total_count")
     private int totalCount;
     @SerializedName("users")
     private List<User> users;

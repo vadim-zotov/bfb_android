@@ -17,8 +17,12 @@ import android.widget.Toast;
 import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
+import com.sphereinc.chairlift.fragments.DepartmantUserTeamFragment;
 import com.sphereinc.chairlift.fragments.DirectoryFragment;
 import com.sphereinc.chairlift.fragments.UserFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -27,6 +31,32 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+
+    private List<BackPressedCallback> backPressedCallbacks = new ArrayList<>();
+
+    public interface BackPressedCallback {
+        void onBackPressed();
+        boolean canBeDissmised();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedCallbacks != null && !backPressedCallbacks.isEmpty()) {
+            for (BackPressedCallback callback : backPressedCallbacks) {
+                if(callback.canBeDissmised()){
+                    getSupportFragmentManager().popBackStack();
+                    backPressedCallbacks.remove(callback);
+                } else {
+                    callback.onBackPressed();
+                }
+            }
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.directory:
-                        switchFragment(new DirectoryFragment());
+//                        switchFragment(new DirectoryFragment());
+                        DepartmantUserTeamFragment fragment = new DepartmantUserTeamFragment();
+                        backPressedCallbacks.add(fragment);
+                        switchFragment(fragment);
                         return true;
 
                     case R.id.logout:
@@ -152,14 +185,4 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
         switchFragment(fragment);
     }
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
 }

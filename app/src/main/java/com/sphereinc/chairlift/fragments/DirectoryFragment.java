@@ -16,8 +16,10 @@ import android.view.ViewGroup;
 
 import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.adapter.UserAdapter;
-import com.sphereinc.chairlift.api.entity.UserSearchResult;
+import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
+import com.sphereinc.chairlift.api.facade.DepartmentFacade;
 import com.sphereinc.chairlift.api.facade.UserFacade;
+import com.sphereinc.chairlift.api.facadeimpl.DepartmentFacadeImpl;
 import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
@@ -31,6 +33,9 @@ import retrofit2.Response;
 public class DirectoryFragment extends Fragment {
 
     private UserFacade userFacade = new UserFacadeImpl();
+
+    private DepartmentFacade departmentFacade = new DepartmentFacadeImpl();
+
     @Bind(R.id.recycler_view)
     RecyclerView _recyclerView;
 

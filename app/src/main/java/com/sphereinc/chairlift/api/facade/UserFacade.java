@@ -1,9 +1,7 @@
 package com.sphereinc.chairlift.api.facade;
 
 import com.sphereinc.chairlift.api.entity.User;
-import com.sphereinc.chairlift.api.entity.UserSearchResult;
-
-import java.util.List;
+import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
 
 import retrofit2.Callback;
 

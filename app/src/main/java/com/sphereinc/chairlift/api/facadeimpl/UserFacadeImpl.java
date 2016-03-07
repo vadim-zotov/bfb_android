@@ -2,7 +2,7 @@ package com.sphereinc.chairlift.api.facadeimpl;
 
 import com.sphereinc.chairlift.api.ServiceGenerator;
 import com.sphereinc.chairlift.api.entity.User;
-import com.sphereinc.chairlift.api.entity.UserSearchResult;
+import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
 import com.sphereinc.chairlift.api.UserService;
 import com.sphereinc.chairlift.api.facade.BaseFacade;
 import com.sphereinc.chairlift.api.facade.UserFacade;

@@ -1,7 +1,7 @@
 package com.sphereinc.chairlift.api;
 
 import com.sphereinc.chairlift.api.entity.User;
-import com.sphereinc.chairlift.api.entity.UserSearchResult;
+import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

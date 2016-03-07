@@ -14,7 +14,7 @@ import retrofit2.Retrofit;
 
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "https://server1.betterfeedback.com";
+    public static final String API_BASE_URL = "https://dev.betterfeedback.com";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
