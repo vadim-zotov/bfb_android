@@ -19,6 +19,7 @@ import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.fragments.DepartmantUserTeamFragment;
 import com.sphereinc.chairlift.fragments.DirectoryFragment;
+import com.sphereinc.chairlift.fragments.FeedbackFragment;
 import com.sphereinc.chairlift.fragments.UserFragment;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     public interface BackPressedCallback {
         void onBackPressed();
+
         boolean canBeDissmised();
     }
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (backPressedCallbacks != null && !backPressedCallbacks.isEmpty()) {
             for (BackPressedCallback callback : backPressedCallbacks) {
-                if(callback.canBeDissmised()){
+                if (callback.canBeDissmised()) {
                     getSupportFragmentManager().popBackStack();
                     backPressedCallbacks.remove(callback);
                 } else {
@@ -92,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
                         DepartmantUserTeamFragment fragment = new DepartmantUserTeamFragment();
                         backPressedCallbacks.add(fragment);
                         switchFragment(fragment);
+                        return true;
+
+                    case R.id.feedback:
+                        switchFeedbackFragment();
                         return true;
 
                     case R.id.logout:
@@ -185,4 +191,11 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
         switchFragment(fragment);
     }
+
+    private void switchFeedbackFragment() {
+        switchFragment(new FeedbackFragment());
+    }
+
+
+
 }

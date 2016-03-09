@@ -7,6 +7,7 @@
     <string name="title_additional_skills">Additional skills</string>
     <string name="title_interests">Interests</string>
     <string name="title_job_related_skills">Job related skills</string>
+    <string name="title_feedback">Feedback</string>
 
     <string name="app_name">Chairlift</string>
     <string name="action_settings">Settings</string>
@@ -33,6 +34,8 @@
 
     <string name="menu_my_profile">My profile</string>
     <string name="menu_directory">Directory</string>
+    <string name="menu_feedback">Feedback</string>
+
     <string name="menu_logout">Logout</string>
 
     <string name="closeDrawer">Navigation View</string>

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sphereinc.chairlift.R;
-import com.sphereinc.chairlift.api.entity.Department;
+import com.sphereinc.chairlift.common.fontawesome.TextAwesome;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
 
 import java.util.List;
@@ -24,9 +24,11 @@ public class DepartmentModelAdapter extends RecyclerView.Adapter<DepartmentModel
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_department_name)
-        public TextView _tvDepartmentName;
+        @Bind(R.id.tv_name)
+        public TextView _tvName;
 
+        @Bind(R.id.tv_has_childs)
+        public TextAwesome _tvHasChilds;
 
         public ViewHolder(View v) {
             super(v);
@@ -61,7 +63,13 @@ public class DepartmentModelAdapter extends RecyclerView.Adapter<DepartmentModel
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder._tvDepartmentName.setText(departmentModels.get(position).getDepartment().getName());
+        DepartmentModel departmentModel = departmentModels.get(position);
+        holder._tvName.setText(departmentModel.getDepartment().getName());
+        if (departmentModel.getChildDepartment().isEmpty()) {
+            holder._tvHasChilds.setVisibility(View.GONE);
+        } else {
+            holder._tvHasChilds.setVisibility(View.VISIBLE);
+        }
         holder.bind(departmentModels.get(position), listener);
     }
 
