@@ -9,6 +9,9 @@
     <string name="title_job_related_skills">Job related skills</string>
     <string name="title_feedback">Feedback</string>
 
+    <string name="department">Departments</string>
+    <string name="team">Teams</string>
+
     <string name="app_name">Chairlift</string>
     <string name="action_settings">Settings</string>
     <string name="login_remeber_me">Remember me</string>

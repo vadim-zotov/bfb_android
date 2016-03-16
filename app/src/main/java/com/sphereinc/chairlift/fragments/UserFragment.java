@@ -231,15 +231,6 @@ public class UserFragment extends Fragment {
             _recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             _recyclerView.addItemDecoration(new DividerItemDecorator(getActivity()));
 
-            //
-            RequiredSkill requiredSkill = new RequiredSkill();
-            requiredSkill.setName("Job related additionalSkill 1");
-            UserFragment.user.getRequiredSkills().add(requiredSkill);
-            requiredSkill = new RequiredSkill();
-            requiredSkill.setName("Job related additionalSkill 2");
-            UserFragment.user.getRequiredSkills().add(requiredSkill);
-            //
-
             _recyclerView.setAdapter(new UserJobRelatedAdapter(UserFragment.user.getRequiredSkills()));
         }
 
@@ -271,15 +262,6 @@ public class UserFragment extends Fragment {
             _recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             _recyclerView.addItemDecoration(new DividerItemDecorator(getActivity()));
 
-            //
-            Interest interest = new Interest();
-            interest.setName("interest 1");
-            UserFragment.user.getInterests().add(interest);
-            interest = new Interest();
-            interest.setName("interest 2");
-            UserFragment.user.getInterests().add(interest);
-            //
-
             _recyclerView.setAdapter(new UserInterestsAdapter(UserFragment.user.getInterests()));
         }
 
@@ -310,15 +292,6 @@ public class UserFragment extends Fragment {
 
             _recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             _recyclerView.addItemDecoration(new DividerItemDecorator(getActivity()));
-
-            //
-            AdditionalSkill additionalSkill = new AdditionalSkill();
-            additionalSkill.setName("additional skill 1");
-            UserFragment.user.getAdditionalSkills().add(additionalSkill);
-            additionalSkill = new AdditionalSkill();
-            additionalSkill.setName("additional skill 2");
-            UserFragment.user.getAdditionalSkills().add(additionalSkill);
-            //
 
             _recyclerView.setAdapter(new UserAdditionalSkillsAdapter(UserFragment.user.getAdditionalSkills()));
         }

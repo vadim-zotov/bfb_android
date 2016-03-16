@@ -5,11 +5,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.sphereinc.chairlift.R;
-import com.sphereinc.chairlift.adapter.DepartmentModelAdapter;
+import com.sphereinc.chairlift.adapter.DirectoryModelAdapter;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
+import com.sphereinc.chairlift.views.models.ParentModel;
+import com.sphereinc.chairlift.views.models.TreeModel;
 
 import java.util.List;
 
@@ -28,13 +29,13 @@ public class SelectorListLayout extends LinearLayout {
     @Bind(R.id.recycler_view)
     RecyclerView _recyclerView;
 
-    private List<DepartmentModel> departmentModels;
+    private List<TreeModel> treeModels;
 
-    public SelectorListLayout(Context context, List<DepartmentModel> departmentModels,
+    public SelectorListLayout(Context context, List<TreeModel> treeModels,
                               OnLoadChildsListener listener) {
         super(context);
         this.context = context;
-        this.departmentModels = departmentModels;
+        this.treeModels = treeModels;
         this.listener = listener;
         build();
     }
@@ -48,18 +49,26 @@ public class SelectorListLayout extends LinearLayout {
         _recyclerView.setHasFixedSize(true);
         _recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        _recyclerView.swapAdapter(new DepartmentModelAdapter(departmentModels,
-                new DepartmentModelAdapter.OnRowClickListener() {
+        _recyclerView.swapAdapter(new DirectoryModelAdapter(treeModels,
+                new DirectoryModelAdapter.OnDepartmentRowClickListener() {
                     @Override
                     public void onItemClick(DepartmentModel item) {
                         listener.onItemClick(item);
                     }
-                }), false);
+                },
+
+                new DirectoryModelAdapter.OnParentRowClickListener() {
+                    @Override
+                    public void onItemClick(ParentModel item) {
+                        listener.onItemClick(item);
+                    }
+                })
+                , false);
     }
 
 
     public interface OnLoadChildsListener {
-        void onItemClick(DepartmentModel departmentModel);
+        void onItemClick(TreeModel treeModel);
     }
 
 

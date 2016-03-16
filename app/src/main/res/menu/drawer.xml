@@ -13,10 +13,10 @@
             android:checked="false"
             android:title="@string/menu_directory" />
 
-        <item
+        <!--item
             android:id="@+id/feedback"
             android:checked="false"
-            android:title="@string/menu_feedback" />
+            android:title="@string/menu_feedback" /-->
 
         <item
             android:id="@+id/logout"

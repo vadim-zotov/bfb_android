@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.sphereinc.chairlift.adapter.UserSearchAdapter;
 import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private List<BackPressedCallback> backPressedCallbacks = new ArrayList<>();
+
+    private MaterialSearchView searchView;
 
     public interface BackPressedCallback {
         void onBackPressed();
@@ -86,19 +91,27 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case R.id.my_profile:
-                        switchToUserFragment();
+                        switchToUserFragment(null);
                         return true;
 
                     case R.id.directory:
 //                        switchFragment(new DirectoryFragment());
                         DepartmantUserTeamFragment fragment = new DepartmantUserTeamFragment();
+                        fragment.setOnUserClickListener(new UserSearchAdapter.OnUserClickListener() {
+                            @Override
+                            public void onItemClick(int userId) {
+                                getSearchView().closeSearch();
+                                switchToUserFragment(userId);
+                            }
+                        });
+
                         backPressedCallbacks.add(fragment);
                         switchFragment(fragment);
                         return true;
 
-                    case R.id.feedback:
-                        switchFeedbackFragment();
-                        return true;
+//                    case R.id.feedback:
+//                        switchFeedbackFragment();
+//                        return true;
 
                     case R.id.logout:
                         logout();
@@ -157,12 +170,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void setFirstMenuItemSelected() {
         navigationView.getMenu().getItem(0).setChecked(true);
-        switchToUserFragment();
+        switchToUserFragment(null);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+
         return true;
     }
 
@@ -184,10 +202,17 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void switchToUserFragment() {
+    private void switchToUserFragment(Integer userId) {
         Bundle bundle = new Bundle();
-        bundle.putString(Keys.USER_FRAGMENT_TYPE, Keys.USER_FRAGMENT_TYPE_MY_PROFILE);
+
+        if (userId == null) {
+            bundle.putString(Keys.USER_FRAGMENT_TYPE, Keys.USER_FRAGMENT_TYPE_MY_PROFILE);
+        } else {
+            bundle.putString(Keys.USER_FRAGMENT_TYPE, Keys.USER_FRAGMENT_TYPE_USER);
+            bundle.putInt(Keys.USER_ID, userId);
+        }
         Fragment fragment = new UserFragment();
+
         fragment.setArguments(bundle);
         switchFragment(fragment);
     }
@@ -196,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         switchFragment(new FeedbackFragment());
     }
 
-
-
+    public MaterialSearchView getSearchView() {
+        return searchView;
+    }
 }

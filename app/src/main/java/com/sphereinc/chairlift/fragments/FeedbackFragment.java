@@ -1,35 +1,14 @@
 package com.sphereinc.chairlift.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.sphereinc.chairlift.R;
-import com.sphereinc.chairlift.adapter.UserAdapter;
-import com.sphereinc.chairlift.api.entity.response.DepartmentsSearchResult;
-import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
-import com.sphereinc.chairlift.api.facade.DepartmentFacade;
-import com.sphereinc.chairlift.api.facade.UserFacade;
-import com.sphereinc.chairlift.api.facadeimpl.DepartmentFacadeImpl;
-import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
-import com.sphereinc.chairlift.common.Preferences;
-import com.sphereinc.chairlift.common.utils.DialogUtils;
-import com.sphereinc.chairlift.converters.DepartmentConverter;
-import com.sphereinc.chairlift.decorator.DividerItemDecorator;
-import com.sphereinc.chairlift.views.SelectorListLayout;
-import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.TagClass;
 import com.sphereinc.chairlift.views.tag.Constants;
 import com.sphereinc.chairlift.views.tag.Tag;
@@ -39,13 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FeedbackFragment extends Fragment {
 
@@ -105,7 +80,7 @@ public class FeedbackFragment extends Fragment {
 //                DepartmentsSearchResult result = response.body();
 //                if (result != null &&
 //                        result.getDepartments() != null) {
-//                    List<DepartmentModel> parentModels = DepartmentConverter.fromDepartmentsToModels(result.getDepartments());
+//                    List<DepartmentModel> parentModels = ModelConverter.fromDepartmentsToModels(result.getDepartments());
 //                    addSelectorLayout(parentModels);
 //                }
 //                DialogUtils.hideProgressDialogs();

@@ -21,7 +21,7 @@ public class Department implements Serializable {
     public int parentDepartmentId;
 
     @SerializedName("users_count")
-    public String usersCount;
+    public int usersCount;
 
     public int getId() {
         return id;
@@ -55,11 +55,11 @@ public class Department implements Serializable {
         return parentDepartmentId;
     }
 
-    public String getUsersCount() {
+    public int getUsersCount() {
         return usersCount;
     }
 
-    public void setUsersCount(String usersCount) {
+    public void setUsersCount(int usersCount) {
         this.usersCount = usersCount;
     }
 }

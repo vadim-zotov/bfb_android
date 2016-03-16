@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/tv_name" />
+        android:layout_toRightOf="@+id/tv_name"/>
+
 
     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
         android:id="@+id/tv_has_childs"
