@@ -16,7 +16,7 @@
             android:id="@+id/tv_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/round_corner"
+            android:background="@drawable/round_corner_25"
             android:layout_centerInParent="true"
             android:gravity="center"/>
 

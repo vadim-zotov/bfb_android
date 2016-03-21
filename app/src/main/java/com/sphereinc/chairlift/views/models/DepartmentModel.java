@@ -2,6 +2,7 @@ package com.sphereinc.chairlift.views.models;
 
 
 import com.sphereinc.chairlift.api.entity.Department;
+import com.sphereinc.chairlift.api.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,12 @@ public class DepartmentModel implements TreeModel {
 
     private Department department;
 
-    private List<TreeModel> childDepartment;
-
+    private List<TreeModel> childDepartment = new ArrayList<>();
 
     public DepartmentModel(Department department) {
         this.departmentId = department.getId();
         this.department = department;
-        this.childDepartment = new ArrayList<TreeModel>();
+        this.childDepartment = new ArrayList<>();
     }
 
     public Department getDepartment() {

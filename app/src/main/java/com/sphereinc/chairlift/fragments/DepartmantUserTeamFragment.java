@@ -19,6 +19,7 @@ import com.sphereinc.chairlift.MainActivity;
 import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.adapter.UserAdapter;
 import com.sphereinc.chairlift.adapter.UserSearchAdapter;
+import com.sphereinc.chairlift.api.entity.User;
 import com.sphereinc.chairlift.api.entity.response.DepartmentsSearchResult;
 import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
 import com.sphereinc.chairlift.api.facade.DepartmentFacade;
@@ -28,8 +29,10 @@ import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
 import com.sphereinc.chairlift.converters.ModelConverter;
 import com.sphereinc.chairlift.views.SelectorListLayout;
+import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.ParentModel;
 import com.sphereinc.chairlift.views.models.TreeModel;
+import com.sphereinc.chairlift.views.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +182,35 @@ public class DepartmantUserTeamFragment extends Fragment
                 new SelectorListLayout.OnLoadChildsListener() {
                     @Override
                     public void onItemClick(TreeModel model) {
+
+                        if (model instanceof DepartmentModel) {
+                            final DepartmentModel castedDepartmentModel = (DepartmentModel) model;
+                            if (castedDepartmentModel.getDepartment().getUsersCount() > 0) {
+
+                                DialogUtils.showDialog(getString(R.string.loading), getActivity());
+                                userFacade.getDepartmentUsers(castedDepartmentModel.getDepartment().getId(),
+                                        new Callback<UserSearchResult>() {
+                                            @Override
+                                            public void onResponse(Response<UserSearchResult> response) {
+                                                UserSearchResult result = response.body();
+                                                if (result != null && result.getUsers() != null) {
+                                                    castedDepartmentModel.getChilds().addAll(ModelConverter.fromUsersToModels(result.getUsers()));
+                                                }
+                                                addSelectorLayout(castedDepartmentModel.getChilds(), false);
+                                                DialogUtils.hideProgressDialogs();
+                                            }
+
+                                            @Override
+                                            public void onFailure(Throwable t) {
+                                                t.printStackTrace();
+                                                DialogUtils.hideProgressDialogs();
+                                            }
+                                        });
+
+
+                            }
+                        }
+
                         if (model.getChilds() != null &&
                                 !model.getChilds().isEmpty()) {
                             addSelectorLayout(model.getChilds(), false);

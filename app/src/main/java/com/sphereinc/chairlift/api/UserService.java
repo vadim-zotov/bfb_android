@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface UserService {
 
     @Headers("Content-Type: application/json")
-    @GET("api/v3/users/me/{userId}")
+    @GET("api/v3/users/{userId}")
     Call<User> getUser(@Path("userId") int userId, @Query("related_data") String relatedData, @Header("Authorization") String header);
 
     @Headers("Content-Type: application/json")

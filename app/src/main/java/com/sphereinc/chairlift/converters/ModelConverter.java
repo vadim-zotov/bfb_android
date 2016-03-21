@@ -2,8 +2,10 @@ package com.sphereinc.chairlift.converters;
 
 
 import com.sphereinc.chairlift.api.entity.Department;
+import com.sphereinc.chairlift.api.entity.User;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.TreeModel;
+import com.sphereinc.chairlift.views.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +35,16 @@ public class ModelConverter {
         }
 
         return parentModels;
+    }
+
+
+    public static List<TreeModel> fromUsersToModels(List<User> users) {
+
+        List<TreeModel> userModels = new ArrayList<>();
+        for (User user : users) {
+            userModels.add(new UserModel(user));
+        }
+        return userModels;
     }
 
 }

@@ -78,8 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         _passInputLayout.setErrorEnabled(true);
 
         //
-        _emailText.setText("admin@fakemail.com");
-        _passwordText.setText("TestAccount123");
+//        _emailText.setText("admin@fakemail.com");
+//        _passwordText.setText("TestAccount123");
         //
 
 

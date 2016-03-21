@@ -11,6 +11,7 @@ import com.sphereinc.chairlift.adapter.DirectoryModelAdapter;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.ParentModel;
 import com.sphereinc.chairlift.views.models.TreeModel;
+import com.sphereinc.chairlift.views.models.UserModel;
 
 import java.util.List;
 
@@ -56,14 +57,18 @@ public class SelectorListLayout extends LinearLayout {
                         listener.onItemClick(item);
                     }
                 },
-
                 new DirectoryModelAdapter.OnParentRowClickListener() {
                     @Override
                     public void onItemClick(ParentModel item) {
                         listener.onItemClick(item);
                     }
-                })
-                , false);
+                } ,
+                new DirectoryModelAdapter.OnUserRowClickListener() {
+                    @Override
+                    public void onItemClick(UserModel item) {
+                        listener.onItemClick(item);
+                    }
+        }), false);
     }
 
 

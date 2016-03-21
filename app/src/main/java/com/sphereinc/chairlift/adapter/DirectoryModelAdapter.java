@@ -11,6 +11,7 @@ import com.sphereinc.chairlift.common.fontawesome.TextAwesome;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.ParentModel;
 import com.sphereinc.chairlift.views.models.TreeModel;
+import com.sphereinc.chairlift.views.models.UserModel;
 
 import java.util.List;
 
@@ -24,11 +25,13 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private OnDepartmentRowClickListener departmentRowClickListener;
     private OnParentRowClickListener parentRowClickListener;
+    private OnUserRowClickListener userRowClickListener;
 
     private static final int TYPE_PARENT = 1;
     private static final int TYPE_DEPARTMENT = 2;
+    private static final int TYPE_USER = 3;
 
-    public static class ChildViewHolder extends RecyclerView.ViewHolder {
+    public static class DepartmentViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.tv_name)
         public TextView _tvName;
@@ -39,7 +42,7 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @Bind(R.id.tv_has_childs)
         public TextAwesome _tvHasChilds;
 
-        public ChildViewHolder(View v) {
+        public DepartmentViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
@@ -53,6 +56,27 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
         }
     }
+
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.tv_username)
+        public TextView _tvUserName;
+
+        public UserViewHolder(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+        }
+
+        public void bind(final UserModel item, final OnUserRowClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
+    }
+
 
     public static class ParentViewHolder extends RecyclerView.ViewHolder {
 
@@ -81,10 +105,11 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public DirectoryModelAdapter(List<TreeModel> treeModels, OnDepartmentRowClickListener departmentRowClickListener,
-                                 OnParentRowClickListener parentRowClickListener) {
+                                 OnParentRowClickListener parentRowClickListener, OnUserRowClickListener userRowClickListener) {
         this.treeModels = treeModels;
         this.departmentRowClickListener = departmentRowClickListener;
         this.parentRowClickListener = parentRowClickListener;
+        this.userRowClickListener = userRowClickListener;
     }
 
     @Override
@@ -92,6 +117,8 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TreeModel treeModel = treeModels.get(position);
         if (treeModel instanceof ParentModel) {
             return TYPE_PARENT;
+        } else if (treeModel instanceof UserModel) {
+            return TYPE_USER;
         } else {
             return TYPE_DEPARTMENT;
         }
@@ -111,7 +138,11 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
             case TYPE_DEPARTMENT:
                 View v2 = inflater.inflate(R.layout.department_row, viewGroup, false);
-                viewHolder = new ChildViewHolder(v2);
+                viewHolder = new DepartmentViewHolder(v2);
+                break;
+            case TYPE_USER:
+                View v3 = inflater.inflate(R.layout.user_row, viewGroup, false);
+                viewHolder = new UserViewHolder(v3);
                 break;
             default:
                 viewHolder = null;
@@ -139,21 +170,32 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 break;
             case TYPE_DEPARTMENT:
-                ChildViewHolder childViewHolder = (ChildViewHolder) viewHolder;
+                DepartmentViewHolder departmentViewHolder = (DepartmentViewHolder) viewHolder;
 
                 DepartmentModel departmentModel = (DepartmentModel) treeModels.get(position);
 
-                childViewHolder._tvName.setText(departmentModel.getDepartment().getName());
+                departmentViewHolder._tvName.setText(departmentModel.getDepartment().getName());
                 if (departmentModel.getChilds().isEmpty()) {
-                    childViewHolder._tvHasChilds.setVisibility(View.GONE);
-                    if(departmentModel.getDepartment().getUsersCount() > 0) {
-                        childViewHolder._tvChildsCount.setText("(" + departmentModel.getDepartment().getUsersCount() + " users)");
+                    departmentViewHolder._tvHasChilds.setVisibility(View.GONE);
+                    if (departmentModel.getDepartment().getUsersCount() > 0) {
+                        departmentViewHolder._tvHasChilds.setVisibility(View.VISIBLE);
+                        departmentViewHolder._tvChildsCount.setText("(" + departmentModel.getDepartment().getUsersCount() + " users)");
                     }
                 } else {
-                    childViewHolder._tvHasChilds.setVisibility(View.VISIBLE);
-                    childViewHolder._tvChildsCount.setText("(" + departmentModel.getChilds().size() + " sub-departments)");
+                    departmentViewHolder._tvHasChilds.setVisibility(View.VISIBLE);
+                    departmentViewHolder._tvChildsCount.setText("(" + departmentModel.getChilds().size() + " sub-departments)");
                 }
-                childViewHolder.bind((DepartmentModel) treeModels.get(position), departmentRowClickListener);
+                departmentViewHolder.bind((DepartmentModel) treeModels.get(position), departmentRowClickListener);
+
+                break;
+            case TYPE_USER:
+                UserViewHolder userViewHolder = (UserViewHolder) viewHolder;
+
+                UserModel userModel = (UserModel) treeModels.get(position);
+
+                userViewHolder._tvUserName.setText(userModel.getUser().getUserName());
+
+                userViewHolder.bind((UserModel) treeModels.get(position), userRowClickListener);
 
                 break;
             default:
@@ -168,6 +210,10 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public interface OnParentRowClickListener {
         void onItemClick(ParentModel parentModel);
+    }
+
+    public interface OnUserRowClickListener {
+        void onItemClick(UserModel parentModel);
     }
 
     @Override

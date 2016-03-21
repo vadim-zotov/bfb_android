@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.sphereinc.chairlift.api.entity.RequiredSkill;
 import com.sphereinc.chairlift.api.entity.User;
 import com.sphereinc.chairlift.api.facade.UserFacade;
 import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
+import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.common.utils.DateUtils;
@@ -47,6 +49,12 @@ public class UserFragment extends Fragment {
 
     @Bind(R.id.profile_image)
     CircleImageView _ivProfile;
+
+    @Bind(R.id.tv_profile)
+    public TextView _tvProfile;
+
+    @Bind(R.id.flyt_profile)
+    public FrameLayout _flytProfile;
 
     @Bind(R.id.tv_username)
     TextView _tvUserName;
@@ -111,6 +119,15 @@ public class UserFragment extends Fragment {
     @Bind(R.id.rlyt_college)
     RelativeLayout _rlytCollege;
 
+    @Bind(R.id.rlyt_job_related_skills)
+    RelativeLayout _rlytJobRelated;
+
+    @Bind(R.id.rlyt_additional_skills)
+    RelativeLayout _rlytAdditionalSkills;
+
+    @Bind(R.id.rlyt_interests)
+    RelativeLayout _rlytInterests;
+
     private static User user;
 
     public enum UserFragmentType {MY_PROFILE, USER}
@@ -139,7 +156,7 @@ public class UserFragment extends Fragment {
         View v = inflater.inflate(R.layout.user_fragment, container, false);
 
         ButterKnife.bind(this, v);
-        _ivProfile.bringToFront();
+        _flytProfile.bringToFront();
         return v;
     }
 
@@ -347,15 +364,33 @@ public class UserFragment extends Fragment {
     private void drawData(User user) {
         this.user = user;
 
-        Picasso.with(getContext())
-                .load(user.getAvatar().getDashboard().getUrl())
-                .into(_ivProfile);
+        if (user.getAvatar() != null && user.getAvatar().getDashboard().getUrl() != null) {
+            ImageHandler.getSharedInstance(getActivity()).load(user.getAvatar().getDashboard().getUrl())
+                    .into(_ivProfile, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            _ivProfile.setVisibility(View.VISIBLE);
+                            _tvProfile.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            _ivProfile.setVisibility(View.GONE);
+                            _tvProfile.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+
+        } else {
+            _ivProfile.setVisibility(View.GONE);
+            _tvProfile.setVisibility(View.VISIBLE);
+        }
 
         _tvUserName.setText(user.getUserName());
         _tvRole.setText(user.getJobRole().getTitle());
         _tvDepartmentName.setText(user.getDepartment().getName());
         _tvAbout.setText(user.getAbout());
-
+        _tvProfile.setText(user.getInitials());
 
         if (user.getLocation() != null) {
             _tvLocation.setText(user.getLocation().getCity());
@@ -405,6 +440,25 @@ public class UserFragment extends Fragment {
 
 //         _tvAdditionalMedicalInfo
         _rlytAdditionalMedicalInfo.setVisibility(View.GONE);
+
+
+        if (user.getRequiredSkills().isEmpty()) {
+            _rlytJobRelated.setVisibility(View.GONE);
+        } else {
+            _rlytJobRelated.setVisibility(View.VISIBLE);
+        }
+
+        if (user.getAdditionalSkills().isEmpty()) {
+            _rlytAdditionalSkills.setVisibility(View.GONE);
+        } else {
+            _rlytAdditionalSkills.setVisibility(View.VISIBLE);
+        }
+
+        if (user.getInterests().isEmpty()) {
+            _rlytInterests.setVisibility(View.GONE);
+        } else {
+            _rlytInterests.setVisibility(View.VISIBLE);
+        }
 
     }
 }
