@@ -1,13 +1,12 @@
 package com.sphereinc.chairlift;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.fragments.DepartmantUserTeamFragment;
-import com.sphereinc.chairlift.fragments.DirectoryFragment;
 import com.sphereinc.chairlift.fragments.FeedbackFragment;
 import com.sphereinc.chairlift.fragments.UserFragment;
 
@@ -91,11 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case R.id.my_profile:
+                        backPressedCallbacks.clear();
                         switchToUserFragment(null);
                         return true;
 
                     case R.id.directory:
-//                        switchFragment(new DirectoryFragment());
+                        backPressedCallbacks.clear();
                         DepartmantUserTeamFragment fragment = new DepartmantUserTeamFragment();
                         fragment.setOnUserClickListener(new UserSearchAdapter.OnUserClickListener() {
                             @Override
@@ -149,6 +148,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void setActiveMenuItem(Integer menuItemPosition) {
+        if(menuItemPosition != null) {
+            navigationView.getMenu().getItem(menuItemPosition).setChecked(true);
+        } else  {
+            navigationView.getMenu().getItem(0).setChecked(false);
+            navigationView.getMenu().getItem(1).setChecked(false);
+            navigationView.getMenu().getItem(2).setChecked(false);
+//            navigationView.getMenu().getItem(3).setChecked(false);
+        }
+    }
+
     private void logout() {
         Preferences.getInstance().clearStoredData();
         Intent intent = new Intent(this, LoginActivity.class);
@@ -169,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFirstMenuItemSelected() {
-        navigationView.getMenu().getItem(0).setChecked(true);
+        setActiveMenuItem(0);
         switchToUserFragment(null);
     }
 

@@ -28,6 +28,8 @@ public class UserSearchAdapter extends ArrayAdapter<User> implements Filterable 
 
     private List<User> users;
 
+//    private int POSITION = 1;
+
     public UserSearchAdapter(Context context, int resourceId,
                              List<User> users, OnUserClickListener userClickListener) {
         super(context, resourceId, users);
@@ -109,6 +111,16 @@ public class UserSearchAdapter extends ArrayAdapter<User> implements Filterable 
             }
         });
 
+//        convertView.setTag(POSITION, position);
+
+//        convertView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                userRowClickListener.onItemClick(users.get((Integer) v.getTag(POSITION)));
+//            }
+//        });
+
         return convertView;
     }
 
@@ -135,7 +147,6 @@ public class UserSearchAdapter extends ArrayAdapter<User> implements Filterable 
         }
 
     }
-
 
     @Override
     public Filter getFilter() {

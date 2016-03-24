@@ -27,6 +27,7 @@ import com.sphereinc.chairlift.api.facade.UserFacade;
 import com.sphereinc.chairlift.api.facadeimpl.DepartmentFacadeImpl;
 import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
+import com.sphereinc.chairlift.common.utils.ErrorHandler;
 import com.sphereinc.chairlift.converters.ModelConverter;
 import com.sphereinc.chairlift.views.SelectorListLayout;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
@@ -66,7 +67,9 @@ public class DepartmantUserTeamFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dtu_fragment, container, false);
         activity = (MainActivity) getActivity();
+        activity.setActiveMenuItem(1);
         activity.getSupportActionBar().setTitle(getString(R.string.title_directory));
+
         ButterKnife.bind(this, v);
 
         setHasOptionsMenu(true);
@@ -114,6 +117,7 @@ public class DepartmantUserTeamFragment extends Fragment
                     @Override
                     public void onFailure(Throwable t) {
                         t.printStackTrace();
+                        ErrorHandler.checkConnectionError(getContext(), t);
                     }
                 });
 
@@ -204,6 +208,7 @@ public class DepartmantUserTeamFragment extends Fragment
                                             public void onFailure(Throwable t) {
                                                 t.printStackTrace();
                                                 DialogUtils.hideProgressDialogs();
+                                                ErrorHandler.checkConnectionError(getContext(), t);
                                             }
                                         });
 
@@ -216,7 +221,7 @@ public class DepartmantUserTeamFragment extends Fragment
                             addSelectorLayout(model.getChilds(), false);
                         }
                     }
-                });
+                }, onUserClickListener);
         layouts.add(selectorListLayout);
         _flytMain.addView(selectorListLayout);
     }

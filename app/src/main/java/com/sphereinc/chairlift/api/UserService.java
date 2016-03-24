@@ -30,4 +30,16 @@ public interface UserService {
                                   @Query("filters") String filters,
                                   @Header("Authorization") String header);
 
+    @Headers("Content-Type: application/json")
+    @GET("api/v3/users")
+    Call<UserSearchResult> getDepartmentUsers(
+//            @Query("search_type") String searchType, @Query("search_value") String searchValue,
+//                                  @Query("sort_column") String sortColumn,
+//                      @Query("sort_direction") String sortDirections,
+//                      @Query("show_deactivated") boolean showDeactivated,
+//                                  @Query("limit") int limit, @Query("offset") int offset,
+                                  @Query("filters") String filters,
+                                  @Header("Authorization") String header);
+
+
 }

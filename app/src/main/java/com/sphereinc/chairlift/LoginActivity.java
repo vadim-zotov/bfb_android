@@ -19,6 +19,7 @@ import com.sphereinc.chairlift.api.facade.LoginFacade;
 import com.sphereinc.chairlift.api.facadeimpl.LoginFacadeImpl;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
+import com.sphereinc.chairlift.common.utils.ErrorHandler;
 
 import org.json.JSONObject;
 
@@ -70,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onFailure(Throwable t) {
                     t.printStackTrace();
                     DialogUtils.hideProgressDialogs();
+                    ErrorHandler.checkConnectionError(LoginActivity.this, t);
                 }
             });
         }
@@ -155,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 t.printStackTrace();
                 DialogUtils.hideProgressDialogs();
+                ErrorHandler.checkConnectionError(LoginActivity.this, t);
             }
         });
     }

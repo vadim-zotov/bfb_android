@@ -35,7 +35,10 @@
                     android:layout_centerInParent="true"
                     android:background="@drawable/round_corner_45"
                     android:gravity="center"
-                    android:visibility="invisible"/>
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"
@@ -323,14 +326,14 @@
 
                     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
                         android:id="@+id/btn_home_phone"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="@string/fa_phone"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="30dp" />
 
                     <TextView
                         android:id="@+id/tv_home_phone"
@@ -357,14 +360,14 @@
 
                     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
                         android:id="@+id/btn_home_email"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="@string/fa_envelope"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="30dp" />
 
                     <TextView
                         android:id="@+id/tv_home_email"
@@ -391,14 +394,14 @@
 
                     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
                         android:id="@+id/btn_emeregency_contact"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="@string/fa_phone"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="30dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -444,14 +447,14 @@
 
                     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
                         android:id="@+id/btn_additional_medical_info"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="@string/fa_exclamation_circle"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="30dp" />
 
                     <TextView
                         android:id="@+id/tv_additional_medical_info"
@@ -478,14 +481,14 @@
 
                     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
                         android:id="@+id/btn_birthday"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="@string/fa_birthday_cake"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="30dp" />
 
                     <TextView
                         android:id="@+id/tv_birthday"
@@ -512,14 +515,14 @@
 
                     <com.sphereinc.chairlift.common.fontawesome.TextAwesome
                         android:id="@+id/btn_college"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:text="@string/fa_graduation_cap"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="30dp" />
 
                     <TextView
                         android:id="@+id/tv_college"

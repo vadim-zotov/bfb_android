@@ -32,8 +32,10 @@ public class UserFacadeImpl extends BaseFacade implements UserFacade {
 
     @Override
     public void getDepartmentUsers(int departmentId, Callback<UserSearchResult> callback) {
-        userService.search("name", "",
-                "users.first_name", 100, 0, "filters=department_id|" + departmentId, getAuthorizationString()).enqueue(callback);
+        userService.getDepartmentUsers(
+//                "name", "", "users.first_name",
+// 100, 0,
+                "department_id|" + String.valueOf(departmentId), getAuthorizationString()).enqueue(callback);
     }
 
 }

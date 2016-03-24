@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.adapter.DirectoryModelAdapter;
+import com.sphereinc.chairlift.adapter.UserSearchAdapter;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.ParentModel;
 import com.sphereinc.chairlift.views.models.TreeModel;
@@ -23,6 +24,7 @@ public class SelectorListLayout extends LinearLayout {
     private Context context;
 
     private OnLoadChildsListener listener;
+    private UserSearchAdapter.OnUserClickListener onUserClickListener;
 
 //    public enum SELECTOR_TYPE {MY_PROFILE, USER}
 
@@ -33,11 +35,12 @@ public class SelectorListLayout extends LinearLayout {
     private List<TreeModel> treeModels;
 
     public SelectorListLayout(Context context, List<TreeModel> treeModels,
-                              OnLoadChildsListener listener) {
+                              OnLoadChildsListener listener, UserSearchAdapter.OnUserClickListener onUserClickListener) {
         super(context);
         this.context = context;
         this.treeModels = treeModels;
         this.listener = listener;
+        this.onUserClickListener = onUserClickListener;
         build();
     }
 
@@ -50,7 +53,7 @@ public class SelectorListLayout extends LinearLayout {
         _recyclerView.setHasFixedSize(true);
         _recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        _recyclerView.swapAdapter(new DirectoryModelAdapter(treeModels,
+        _recyclerView.swapAdapter(new DirectoryModelAdapter(context, treeModels,
                 new DirectoryModelAdapter.OnDepartmentRowClickListener() {
                     @Override
                     public void onItemClick(DepartmentModel item) {
@@ -62,19 +65,20 @@ public class SelectorListLayout extends LinearLayout {
                     public void onItemClick(ParentModel item) {
                         listener.onItemClick(item);
                     }
-                } ,
+                },
                 new DirectoryModelAdapter.OnUserRowClickListener() {
                     @Override
-                    public void onItemClick(UserModel item) {
-                        listener.onItemClick(item);
+                    public void onItemClick(UserModel userModel) {
+                        onUserClickListener.onItemClick(userModel.getId());
                     }
-        }), false);
+                }), false);
     }
 
 
     public interface OnLoadChildsListener {
         void onItemClick(TreeModel treeModel);
     }
+
 
 
 }

@@ -17,12 +17,11 @@ import android.view.ViewGroup;
 import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.adapter.UserAdapter;
 import com.sphereinc.chairlift.api.entity.response.UserSearchResult;
-import com.sphereinc.chairlift.api.facade.DepartmentFacade;
 import com.sphereinc.chairlift.api.facade.UserFacade;
-import com.sphereinc.chairlift.api.facadeimpl.DepartmentFacadeImpl;
 import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
+import com.sphereinc.chairlift.common.utils.ErrorHandler;
 import com.sphereinc.chairlift.decorator.DividerItemDecorator;
 
 import butterknife.Bind;
@@ -34,16 +33,22 @@ public class DirectoryFragment extends Fragment {
 
     private UserFacade userFacade = new UserFacadeImpl();
 
-    private DepartmentFacade departmentFacade = new DepartmentFacadeImpl();
-
     @Bind(R.id.recycler_view)
     RecyclerView _recyclerView;
+
+    public String currentSearchText;
+    public String nextSearchString;
+    public boolean searchInProgress = false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.directory_fragment, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_directory));
+
+
+        searchInProgress = false;
+        nextSearchString = "";
 
         ButterKnife.bind(this, v);
         setHasOptionsMenu(true);
@@ -92,23 +97,42 @@ public class DirectoryFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String name) {
-                userFacade.searchByName(name, new Callback<UserSearchResult>() {
-                    @Override
-                    public void onResponse(Response<UserSearchResult> response) {
-                        UserSearchResult result = response.body();
-                        if (result != null && result.getUsers() != null) {
-                            _recyclerView.swapAdapter(new UserAdapter(result.getUsers()), false);
-                        }
-                    }
+                _recyclerView.swapAdapter(null, false);
 
-                    @Override
-                    public void onFailure(Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
+                if (!searchInProgress) {
+                    searchUserByName(name);
+                } else {
+                    nextSearchString = name;
+                }
                 return false;
             }
 
+        });
+    }
+
+    private void searchUserByName(String name) {
+        nextSearchString = "";
+        searchInProgress = true;
+        userFacade.searchByName(name, new Callback<UserSearchResult>() {
+            @Override
+            public void onResponse(Response<UserSearchResult> response) {
+                if (nextSearchString.isEmpty()) {
+                    UserSearchResult result = response.body();
+                    if (result != null && result.getUsers() != null) {
+                        _recyclerView.swapAdapter(new UserAdapter(result.getUsers()), false);
+                    }
+                    searchInProgress = false;
+                } else {
+                    searchUserByName(nextSearchString);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+                ErrorHandler.checkConnectionError(getContext(), t);
+                searchInProgress = false;
+            }
         });
     }
 
@@ -128,6 +152,7 @@ public class DirectoryFragment extends Fragment {
             public void onFailure(Throwable t) {
                 t.printStackTrace();
                 DialogUtils.hideProgressDialogs();
+                ErrorHandler.checkConnectionError(getContext(), t);
             }
         });
     }

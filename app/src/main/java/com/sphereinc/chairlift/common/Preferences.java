@@ -28,12 +28,13 @@ public class Preferences {
 
     public void clearStoredData() {
         setAccessToken("");
-        setRefreshToken("");
+        setRefreshToken(null);
         setUserDepartmentId(-1);
         setUserName("");
         setUserMail("");
         setUserRole("");
         setUserAvatarUrl("");
+        setRememberLogin(false);
     }
 
     private void saveString(String key, String value) {

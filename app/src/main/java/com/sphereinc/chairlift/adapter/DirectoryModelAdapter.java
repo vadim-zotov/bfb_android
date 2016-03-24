@@ -1,5 +1,6 @@
 package com.sphereinc.chairlift.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,16 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sphereinc.chairlift.R;
+import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.fontawesome.TextAwesome;
 import com.sphereinc.chairlift.views.models.DepartmentModel;
 import com.sphereinc.chairlift.views.models.ParentModel;
 import com.sphereinc.chairlift.views.models.TreeModel;
 import com.sphereinc.chairlift.views.models.UserModel;
+import com.squareup.picasso.Callback;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -30,6 +34,8 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int TYPE_PARENT = 1;
     private static final int TYPE_DEPARTMENT = 2;
     private static final int TYPE_USER = 3;
+
+    private Context context;
 
     public static class DepartmentViewHolder extends RecyclerView.ViewHolder {
 
@@ -59,8 +65,20 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
 
+        @Bind(R.id.profile_image)
+        public CircleImageView _ivProfile;
+
+        @Bind(R.id.tv_profile)
+        public TextView _tvProfile;
+
         @Bind(R.id.tv_username)
         public TextView _tvUserName;
+
+        @Bind(R.id.tv_role)
+        public TextView _tvRole;
+
+        @Bind(R.id.tv_location)
+        public TextView _tvLocation;
 
         public UserViewHolder(View v) {
             super(v);
@@ -104,8 +122,9 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public DirectoryModelAdapter(List<TreeModel> treeModels, OnDepartmentRowClickListener departmentRowClickListener,
+    public DirectoryModelAdapter(Context context, List<TreeModel> treeModels, OnDepartmentRowClickListener departmentRowClickListener,
                                  OnParentRowClickListener parentRowClickListener, OnUserRowClickListener userRowClickListener) {
+        this.context = context;
         this.treeModels = treeModels;
         this.departmentRowClickListener = departmentRowClickListener;
         this.parentRowClickListener = parentRowClickListener;
@@ -189,11 +208,35 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 break;
             case TYPE_USER:
-                UserViewHolder userViewHolder = (UserViewHolder) viewHolder;
+                final UserViewHolder userViewHolder = (UserViewHolder) viewHolder;
 
                 UserModel userModel = (UserModel) treeModels.get(position);
 
+                if (userModel.getUser().getAvatar() != null && userModel.getUser().getAvatar().getIcon().getUrl() != null) {
+
+                    ImageHandler.getSharedInstance(context).load(userModel.getUser().getAvatar().getIcon().getUrl()).into(userViewHolder._ivProfile, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            userViewHolder._ivProfile.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            userViewHolder._ivProfile.setVisibility(View.GONE);
+                        }
+                    });
+
+
+                } else {
+                    userViewHolder._ivProfile.setVisibility(View.GONE);
+                }
+
                 userViewHolder._tvUserName.setText(userModel.getUser().getUserName());
+                userViewHolder._tvRole.setText(userModel.getUser().getJobRole().getTitle());
+                userViewHolder._tvProfile.setText(userModel.getUser().getInitials());
+                if (userModel.getUser().getLocation() != null) {
+                    userViewHolder._tvLocation.setText(userModel.getUser().getLocation().getCity());
+                }
 
                 userViewHolder.bind((UserModel) treeModels.get(position), userRowClickListener);
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,9 +23,6 @@ import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.adapter.UserAdditionalSkillsAdapter;
 import com.sphereinc.chairlift.adapter.UserInterestsAdapter;
 import com.sphereinc.chairlift.adapter.UserJobRelatedAdapter;
-import com.sphereinc.chairlift.api.entity.AdditionalSkill;
-import com.sphereinc.chairlift.api.entity.Interest;
-import com.sphereinc.chairlift.api.entity.RequiredSkill;
 import com.sphereinc.chairlift.api.entity.User;
 import com.sphereinc.chairlift.api.facade.UserFacade;
 import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
@@ -33,8 +31,8 @@ import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.common.utils.DateUtils;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
+import com.sphereinc.chairlift.common.utils.ErrorHandler;
 import com.sphereinc.chairlift.decorator.DividerItemDecorator;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -136,15 +134,15 @@ public class UserFragment extends Fragment {
 
     private int userId;
 
+    private MainActivity activity;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Keys.USER_FRAGMENT_TYPE_MY_PROFILE.equals(getArguments().getString(Keys.USER_FRAGMENT_TYPE))) {
             userFragmentType = UserFragmentType.MY_PROFILE;
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_my_profile));
         } else if (Keys.USER_FRAGMENT_TYPE_USER.equals(getArguments().getString(Keys.USER_FRAGMENT_TYPE))) {
             userFragmentType = UserFragmentType.USER;
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_user));
             userId = getArguments().getInt(Keys.USER_ID);
         }
     }
@@ -154,6 +152,15 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.user_fragment, container, false);
+        activity = (MainActivity) getActivity();
+
+        if (UserFragmentType.MY_PROFILE.equals(userFragmentType)) {
+            activity.getSupportActionBar().setTitle(getString(R.string.title_my_profile));
+            activity.setActiveMenuItem(0);
+        } else if (UserFragmentType.USER.equals(userFragmentType)) {
+            activity.getSupportActionBar().setTitle(getString(R.string.title_user));
+            activity.setActiveMenuItem(null);
+        }
 
         ButterKnife.bind(this, v);
         _flytProfile.bringToFront();
@@ -332,6 +339,7 @@ public class UserFragment extends Fragment {
                 public void onFailure(Throwable t) {
                     t.printStackTrace();
                     DialogUtils.hideProgressDialogs();
+                    ErrorHandler.checkConnectionError(getContext(), t);
                 }
             });
         } else if (UserFragmentType.USER.equals(userFragmentType)) {
@@ -346,6 +354,7 @@ public class UserFragment extends Fragment {
                 public void onFailure(Throwable t) {
                     t.printStackTrace();
                     DialogUtils.hideProgressDialogs();
+                    ErrorHandler.checkConnectionError(getContext(), t);
                 }
             });
         }
