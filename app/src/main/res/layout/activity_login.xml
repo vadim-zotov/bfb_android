@@ -65,6 +65,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
+                android:textSize="17sp"
                 android:text="@string/login_remeber_me" />
 
             <android.support.v7.widget.SwitchCompat
@@ -74,7 +75,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:background="@null" />
+                android:background="@null"
+                android:alpha="1.5"/>
         </RelativeLayout>
 
 
@@ -86,6 +88,7 @@
             android:layout_marginTop="24dp"
             android:padding="12dp"
             android:text="Login"
+            android:textSize="17sp"
             android:textColor="@color/white" />
 
     </LinearLayout>
