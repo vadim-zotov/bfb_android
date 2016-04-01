@@ -7,7 +7,7 @@ public class Interest {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("name")
+    @SerializedName("title")
     public String name;
 
     public int getId() {

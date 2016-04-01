@@ -18,8 +18,8 @@
     <string name="my_profile_employee_since">Employee since </string>
     <string name="my_profile_about_me">About me</string>
     <string name="my_profile_skills_interests">My Skills + Interests</string>
-    <string name="my_profile_job_related_skills">Job related additionalSkills</string>
-    <string name="my_profile_additional_skills">Additional additionalSkills</string>
+    <string name="my_profile_job_related_skills">Job related skills</string>
+    <string name="my_profile_additional_skills">Additional skills</string>
     <string name="my_profile_interests">Interests</string>
 
     <string name="my_profile_additional_info">Additional Info</string>

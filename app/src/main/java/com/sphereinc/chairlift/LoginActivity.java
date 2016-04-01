@@ -137,9 +137,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        _loginButton.setEnabled(false);
-
-
         DialogUtils.showDialog("Authenticating...", LoginActivity.this);
 
         loginFacade.login(_emailText.getText().toString(), _passwordText.getText().toString(), new Callback<LoginDetails>() {
@@ -176,8 +173,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess(LoginDetails loginDetails) {
         preferences.setRememberLogin(_scRememberMe.isChecked());
         storeLoginDetails(loginDetails);
-        _loginButton.setEnabled(true);
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
@@ -191,8 +186,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
-        _loginButton.setEnabled(true);
     }
 
     public boolean validate() {

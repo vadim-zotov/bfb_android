@@ -88,6 +88,9 @@ public class User implements Serializable {
     @SerializedName("emergency_role")
     public String emergencyRole;
 
+    @SerializedName("dietary_restrictions")
+    public String dietaryRestrictions;
+
     public String getFirstName() {
         return firstName;
     }
@@ -299,6 +302,14 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(String dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
     }
 
     public String getInitials() {

@@ -62,6 +62,9 @@ public class DepartmantUserTeamFragment extends Fragment
 
     private UserSearchAdapter.OnUserClickListener onUserClickListener;
 
+    public String nextSearchString;
+    public boolean searchInProgress = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,27 +104,7 @@ public class DepartmantUserTeamFragment extends Fragment
 
             @Override
             public boolean onQueryTextChange(final String name) {
-
-                userFacade.searchByName(name, new Callback<UserSearchResult>() {
-                    @Override
-                    public void onResponse(Response<UserSearchResult> response) {
-                        UserSearchResult result = response.body();
-                        if (result != null && result.getUsers() != null) {
-                            UserSearchAdapter adapter = new UserSearchAdapter(getActivity(), R.layout.user_row, result.getUsers(),
-                                    onUserClickListener);
-                            activity.getSearchView().setAdapter(adapter);
-//                            activity.getSearchView().showSuggestions();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                        t.printStackTrace();
-                        ErrorHandler.checkConnectionError(getContext(), t);
-                    }
-                });
-
-
+                searchUserByName(name);
                 return true;
             }
         });
@@ -138,6 +121,33 @@ public class DepartmantUserTeamFragment extends Fragment
             }
         });
 
+    }
+
+    private void searchUserByName(String name) {
+        nextSearchString = "";
+        searchInProgress = true;
+        userFacade.searchByName(name, new Callback<UserSearchResult>() {
+            @Override
+            public void onResponse(Response<UserSearchResult> response) {
+                if (nextSearchString.isEmpty()) {
+                    UserSearchResult result = response.body();
+                    if (result != null && result.getUsers() != null) {
+                        UserSearchAdapter adapter = new UserSearchAdapter(getActivity(), R.layout.user_row, result.getUsers(),
+                                onUserClickListener);
+                        activity.getSearchView().setAdapter(adapter);
+                    }
+                    searchInProgress = false;
+                } else {
+                    searchUserByName(nextSearchString);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+                ErrorHandler.checkConnectionError(getContext(), t);
+            }
+        });
     }
 
 
@@ -189,30 +199,33 @@ public class DepartmantUserTeamFragment extends Fragment
 
                         if (model instanceof DepartmentModel) {
                             final DepartmentModel castedDepartmentModel = (DepartmentModel) model;
-                            if (castedDepartmentModel.getDepartment().getUsersCount() > 0) {
+                            if (!((DepartmentModel) model).isChildsAreLoaded()) {
+                                if (castedDepartmentModel.getDepartment().getUsersCount() > 0) {
 
-                                DialogUtils.showDialog(getString(R.string.loading), getActivity());
-                                userFacade.getDepartmentUsers(castedDepartmentModel.getDepartment().getId(),
-                                        new Callback<UserSearchResult>() {
-                                            @Override
-                                            public void onResponse(Response<UserSearchResult> response) {
-                                                UserSearchResult result = response.body();
-                                                if (result != null && result.getUsers() != null) {
-                                                    castedDepartmentModel.getChilds().addAll(ModelConverter.fromUsersToModels(result.getUsers()));
+                                    DialogUtils.showDialog(getString(R.string.loading), getActivity());
+                                    userFacade.getDepartmentUsers(castedDepartmentModel.getDepartment().getId(),
+                                            new Callback<UserSearchResult>() {
+                                                @Override
+                                                public void onResponse(Response<UserSearchResult> response) {
+                                                    castedDepartmentModel.setChildsAreLoaded(true);
+                                                    UserSearchResult result = response.body();
+                                                    if (result != null && result.getUsers() != null) {
+                                                        castedDepartmentModel.getChilds().addAll(ModelConverter.fromUsersToModels(result.getUsers()));
+                                                    }
+                                                    addSelectorLayout(castedDepartmentModel.getChilds(), false);
+                                                    DialogUtils.hideProgressDialogs();
                                                 }
-                                                addSelectorLayout(castedDepartmentModel.getChilds(), false);
-                                                DialogUtils.hideProgressDialogs();
-                                            }
 
-                                            @Override
-                                            public void onFailure(Throwable t) {
-                                                t.printStackTrace();
-                                                DialogUtils.hideProgressDialogs();
-                                                ErrorHandler.checkConnectionError(getContext(), t);
-                                            }
-                                        });
+                                                @Override
+                                                public void onFailure(Throwable t) {
+                                                    t.printStackTrace();
+                                                    DialogUtils.hideProgressDialogs();
+                                                    ErrorHandler.checkConnectionError(getContext(), t);
+                                                }
+                                            });
 
 
+                                }
                             }
                         }
 

@@ -14,6 +14,8 @@ public class DepartmentModel implements TreeModel {
 
     private List<TreeModel> childDepartment = new ArrayList<>();
 
+    private boolean childsAreLoaded = false;
+
     public DepartmentModel(Department department) {
         this.departmentId = department.getId();
         this.department = department;
@@ -43,5 +45,13 @@ public class DepartmentModel implements TreeModel {
 
     public void setChildDepartment(List<TreeModel> childDepartment) {
         this.childDepartment = childDepartment;
+    }
+
+    public boolean isChildsAreLoaded() {
+        return childsAreLoaded;
+    }
+
+    public void setChildsAreLoaded(boolean childsAreLoaded) {
+        this.childsAreLoaded = childsAreLoaded;
     }
 }

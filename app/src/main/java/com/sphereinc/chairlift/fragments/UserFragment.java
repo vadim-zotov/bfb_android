@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.sphereinc.chairlift.api.facadeimpl.UserFacadeImpl;
 import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
+import com.sphereinc.chairlift.common.fontawesome.TextAwesome;
 import com.sphereinc.chairlift.common.utils.DateUtils;
 import com.sphereinc.chairlift.common.utils.DialogUtils;
 import com.sphereinc.chairlift.common.utils.ErrorHandler;
@@ -63,13 +65,14 @@ public class UserFragment extends Fragment {
     @Bind(R.id.tv_department_name)
     TextView _tvDepartmentName;
 
-
     @Bind(R.id.tv_location)
     TextView _tvLocation;
 
     @Bind(R.id.tv_about)
     TextView _tvAbout;
 
+    @Bind(R.id.lyt_about)
+    LinearLayout _lytAbout;
 
     @Bind(R.id.tv_home_phone)
     TextView _tvHomePhone;
@@ -114,6 +117,9 @@ public class UserFragment extends Fragment {
     @Bind(R.id.tv_college)
     TextView _tvCollege;
 
+    @Bind(R.id.card_skills_parent)
+    CardView _cardSkillsParent;
+
     @Bind(R.id.rlyt_college)
     RelativeLayout _rlytCollege;
 
@@ -125,6 +131,27 @@ public class UserFragment extends Fragment {
 
     @Bind(R.id.rlyt_interests)
     RelativeLayout _rlytInterests;
+
+    @Bind(R.id.btn_call)
+    TextAwesome _btnCall;
+
+    @Bind(R.id.btn_send_email)
+    TextAwesome _btnSendEmail;
+
+    @Bind(R.id.btn_linkedin)
+    TextAwesome _btnLinkedin;
+
+    @Bind(R.id.btn_twitter)
+    TextAwesome _btnTwitter;
+
+    @Bind(R.id.btn_facebook)
+    TextAwesome _btnFacebook;
+
+    @Bind(R.id.btn_github)
+    TextAwesome _btnGitHub;
+
+    @Bind(R.id.card_additional_info)
+    CardView _cardAdditionalInfo;
 
     private static User user;
 
@@ -205,17 +232,24 @@ public class UserFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.btn_job_related_skills})
+    @OnClick({R.id.btn_github})
+    public void openGithub() {
+        if (user.getGithubURL() != null) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(user.getGithubURL())));
+        }
+    }
+
+    @OnClick({R.id.rlyt_job_related_skills})
     public void openJobRelatedSkills() {
         ((MainActivity) getActivity()).switchFragment(new UserJobRelatedDialog());
     }
 
-    @OnClick({R.id.btn_additional_skills})
+    @OnClick({R.id.rlyt_additional_skills})
     public void openAdditionalSkills() {
         ((MainActivity) getActivity()).switchFragment(new UserAdditionalSkillsFragment());
     }
 
-    @OnClick({R.id.btn_interests})
+    @OnClick({R.id.rlyt_interests})
     public void openInterests() {
         ((MainActivity) getActivity()).switchFragment(new UserInterestsFragment());
     }
@@ -398,15 +432,64 @@ public class UserFragment extends Fragment {
         _tvUserName.setText(user.getUserName());
         _tvRole.setText(user.getJobRole().getTitle());
         _tvDepartmentName.setText(user.getDepartment().getName());
-        _tvAbout.setText(user.getAbout());
+
+
+        if (user.getAbout() != null) {
+            _tvAbout.setText(user.getAbout());
+        } else {
+            _lytAbout.setVisibility(View.GONE);
+        }
+
         _tvProfile.setText(user.getInitials());
 
         if (user.getLocation() != null) {
             _tvLocation.setText(user.getLocation().getCity());
         }
 
+        if (user.getEmploymentStartDate() != null) {
+            _tvEmployeeSince.setText(getString(R.string.my_profile_employee_since) + " " + DateUtils.getDateString(user.getEmploymentStartDate()));
+        }
+
+        if (user.getBusinessPhone() != null) {
+            _btnCall.setVisibility(View.VISIBLE);
+        } else {
+            _btnCall.setVisibility(View.GONE);
+        }
+
+        if (user.getEmail() != null) {
+            _btnSendEmail.setVisibility(View.VISIBLE);
+        } else {
+            _btnSendEmail.setVisibility(View.GONE);
+        }
+
+        if (user.getLinkedinURL() != null) {
+            _btnLinkedin.setVisibility(View.VISIBLE);
+        } else {
+            _btnLinkedin.setVisibility(View.GONE);
+        }
+
+        if (user.getTwiterURL() != null) {
+            _btnTwitter.setVisibility(View.VISIBLE);
+        } else {
+            _btnTwitter.setVisibility(View.GONE);
+        }
+
+        if (user.getFacebookURL() != null) {
+            _btnFacebook.setVisibility(View.VISIBLE);
+        } else {
+            _btnFacebook.setVisibility(View.GONE);
+        }
+
+        if (user.getGithubURL() != null) {
+            _btnGitHub.setVisibility(View.VISIBLE);
+        } else {
+            _btnGitHub.setVisibility(View.GONE);
+        }
+
+        boolean showAdditionalInfo = false;
 
         if (user.getCellPhone() != null) {
+            showAdditionalInfo = true;
             _tvHomePhone.setText(user.getCellPhone());
         } else {
             _rlytHomePhone.setVisibility(View.GONE);
@@ -414,18 +497,14 @@ public class UserFragment extends Fragment {
 
 
         if (user.getPersonalEmail() != null) {
+            showAdditionalInfo = true;
             _tvHomeEmail.setText(user.getPersonalEmail());
         } else {
             _rlytHomeEmail.setVisibility(View.GONE);
         }
 
-
-        if (user.getEmploymentStartDate() != null) {
-            _tvEmployeeSince.setText(getString(R.string.my_profile_employee_since) + " " + DateUtils.getDateString(user.getEmploymentStartDate()));
-        }
-
-
         if (user.getEmergencyFullName() != null || user.getEmergencyPhone() != null || user.getEmergencyRole() != null) {
+            showAdditionalInfo = true;
             _tvEmeregencyName.setText(user.getEmergencyFullName());
             _tvEmeregencyContact.setText(user.getEmergencyPhone());
             _tvEmeregencyRole.setText(user.getEmergencyRole());
@@ -435,6 +514,7 @@ public class UserFragment extends Fragment {
 
 
         if (user.getBirthdayDate() != null) {
+            showAdditionalInfo = true;
             _tvBirthday.setText(DateUtils.getDateString(user.getBirthdayDate()));
         } else {
             _rlytBirthday.setVisibility(View.GONE);
@@ -442,31 +522,47 @@ public class UserFragment extends Fragment {
 
 
         if (user.getCollege() != null) {
+            showAdditionalInfo = true;
             _tvCollege.setText(user.getCollege());
         } else {
             _rlytCollege.setVisibility(View.GONE);
         }
 
-//         _tvAdditionalMedicalInfo
-        _rlytAdditionalMedicalInfo.setVisibility(View.GONE);
-
-
-        if (user.getRequiredSkills().isEmpty()) {
-            _rlytJobRelated.setVisibility(View.GONE);
+        if (user.getDietaryRestrictions() != null) {
+            showAdditionalInfo = true;
+            _tvAdditionalMedicalInfo.setText(user.getDietaryRestrictions());
         } else {
-            _rlytJobRelated.setVisibility(View.VISIBLE);
+            _rlytAdditionalMedicalInfo.setVisibility(View.GONE);
         }
 
-        if (user.getAdditionalSkills().isEmpty()) {
-            _rlytAdditionalSkills.setVisibility(View.GONE);
+        if (showAdditionalInfo) {
+            _cardAdditionalInfo.setVisibility(View.VISIBLE);
         } else {
-            _rlytAdditionalSkills.setVisibility(View.VISIBLE);
+            _cardAdditionalInfo.setVisibility(View.GONE);
         }
 
-        if (user.getInterests().isEmpty()) {
-            _rlytInterests.setVisibility(View.GONE);
+
+        if (user.getRequiredSkills().isEmpty() && user.getAdditionalSkills().isEmpty() &&
+                user.getInterests().isEmpty()) {
+            _cardSkillsParent.setVisibility(View.GONE);
         } else {
-            _rlytInterests.setVisibility(View.VISIBLE);
+            if (user.getRequiredSkills().isEmpty()) {
+                _rlytJobRelated.setVisibility(View.GONE);
+            } else {
+                _rlytJobRelated.setVisibility(View.VISIBLE);
+            }
+
+            if (user.getAdditionalSkills().isEmpty()) {
+                _rlytAdditionalSkills.setVisibility(View.GONE);
+            } else {
+                _rlytAdditionalSkills.setVisibility(View.VISIBLE);
+            }
+
+            if (user.getInterests().isEmpty()) {
+                _rlytInterests.setVisibility(View.GONE);
+            } else {
+                _rlytInterests.setVisibility(View.VISIBLE);
+            }
         }
 
     }

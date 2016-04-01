@@ -14,13 +14,13 @@ public class UserFacadeImpl extends BaseFacade implements UserFacade {
 
     @Override
     public void getMe(Callback<User> callback) {
-        userService.getMe("company,department,job_role,location,manager,role,permissions,additionalSkills,required_skills,interests,objectives",
+        userService.getMe("company,department,job_role,location,manager,role,permissions,skills,required_skills,interests,objectives",
                 getAuthorizationString()).enqueue(callback);
     }
 
     @Override
     public void getUser(int userId, Callback<User> callback) {
-        userService.getUser(userId, "company,department,job_role,location,manager,role,permissions,additionalSkills,required_skills,interests,objectives",
+        userService.getUser(userId, "company,department,job_role,location,manager,role,permissions,skills,required_skills,interests,objectives",
                 getAuthorizationString()).enqueue(callback);
     }
 
