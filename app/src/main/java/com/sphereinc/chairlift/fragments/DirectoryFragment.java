@@ -119,7 +119,7 @@ public class DirectoryFragment extends Fragment {
                 if (nextSearchString.isEmpty()) {
                     UserSearchResult result = response.body();
                     if (result != null && result.getUsers() != null) {
-                        _recyclerView.swapAdapter(new UserAdapter(result.getUsers()), false);
+//                        _recyclerView.swapAdapter(new UserAdapter(result.getUsers()), false);
                     }
                     searchInProgress = false;
                 } else {
@@ -143,7 +143,7 @@ public class DirectoryFragment extends Fragment {
             public void onResponse(Response<UserSearchResult> response) {
                 UserSearchResult result = response.body();
                 if (result != null && result.getUsers() != null) {
-                    _recyclerView.swapAdapter(new UserAdapter(result.getUsers()), false);
+//                    _recyclerView.swapAdapter(new UserAdapter(result.getUsers()), false);
                 }
                 DialogUtils.hideProgressDialogs();
             }

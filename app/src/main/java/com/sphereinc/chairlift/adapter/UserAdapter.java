@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.api.entity.User;
 import com.sphereinc.chairlift.common.ImageHandler;
+import com.sphereinc.chairlift.views.models.ParentModel;
+import com.sphereinc.chairlift.views.models.UserModel;
 import com.squareup.picasso.Callback;
 
 import java.util.List;
@@ -24,8 +26,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private List<User> users;
     private Context context;
+    private OnUserClickListener userRowClickListener;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.profile_image)
         public CircleImageView _ivProfile;
 
@@ -45,12 +49,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         public ViewHolder(View v) {
             super(v);
-            v.setOnClickListener(this);
             ButterKnife.bind(this, v);
         }
 
-        @Override
-        public void onClick(View view) {
+        public void bind(final int userId, final OnUserClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(userId);
+                }
+            });
         }
 
         public int getUserId() {
@@ -62,8 +70,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
     }
 
-    public UserAdapter(List<User> users) {
+    public UserAdapter(List<User> users, OnUserClickListener userRowClickListener) {
         this.users = users;
+        this.userRowClickListener = userRowClickListener;
     }
 
     @Override
@@ -105,10 +114,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             holder._tvLocation.setText(user.getLocation().getCity());
         }
         holder.setUserId(user.getId());
+        holder.bind(user.getId(), userRowClickListener);
     }
 
     @Override
     public int getItemCount() {
         return users.size();
     }
+
+    public interface OnUserClickListener {
+        void onItemClick(int userId);
+    }
+
 }

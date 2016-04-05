@@ -96,30 +96,30 @@ public class DepartmantUserTeamFragment extends Fragment
         MenuItem mSearchMenuItem = menu.findItem(R.id.action_search);
         mSearchMenuItem.setVisible(true);
 
-        activity.getSearchView().setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(final String name) {
-                searchUserByName(name);
-                return true;
-            }
-        });
-
-        activity.getSearchView().setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                //Do some magic
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                //Do some magic
-            }
-        });
+//        activity.getSearchView().setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(final String name) {
+//                searchUserByName(name);
+//                return true;
+//            }
+//        });
+//
+//        activity.getSearchView().setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+//            @Override
+//            public void onSearchViewShown() {
+//                //Do some magic
+//            }
+//
+//            @Override
+//            public void onSearchViewClosed() {
+//                //Do some magic
+//            }
+//        });
 
     }
 
@@ -134,7 +134,7 @@ public class DepartmantUserTeamFragment extends Fragment
                     if (result != null && result.getUsers() != null) {
                         UserSearchAdapter adapter = new UserSearchAdapter(getActivity(), R.layout.user_row, result.getUsers(),
                                 onUserClickListener);
-                        activity.getSearchView().setAdapter(adapter);
+//                        activity.getSearchView().setAdapter(adapter);
                     }
                     searchInProgress = false;
                 } else {

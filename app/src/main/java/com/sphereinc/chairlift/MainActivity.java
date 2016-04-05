@@ -16,12 +16,14 @@ import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.sphereinc.chairlift.adapter.UserSearchAdapter;
+import com.sphereinc.chairlift.common.ApplicationContextProvider;
 import com.sphereinc.chairlift.common.ImageHandler;
 import com.sphereinc.chairlift.common.Keys;
 import com.sphereinc.chairlift.common.Preferences;
 import com.sphereinc.chairlift.fragments.DepartmantUserTeamFragment;
 import com.sphereinc.chairlift.fragments.FeedbackFragment;
 import com.sphereinc.chairlift.fragments.UserFragment;
+import com.sphereinc.chairlift.views.customsearchable.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<BackPressedCallback> backPressedCallbacks = new ArrayList<>();
 
-    private MaterialSearchView searchView;
+//    private MaterialSearchView searchView;
 
     public interface BackPressedCallback {
         void onBackPressed();
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment.setOnUserClickListener(new UserSearchAdapter.OnUserClickListener() {
                             @Override
                             public void onItemClick(int userId) {
-                                getSearchView().closeSearch();
+//                                getSearchView().closeSearch();
                                 switchToUserFragment(userId);
                             }
                         });
@@ -149,9 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setActiveMenuItem(Integer menuItemPosition) {
-        if(menuItemPosition != null) {
+        if (menuItemPosition != null) {
             navigationView.getMenu().getItem(menuItemPosition).setChecked(true);
-        } else  {
+        } else {
             navigationView.getMenu().getItem(0).setChecked(false);
             navigationView.getMenu().getItem(1).setChecked(false);
             navigationView.getMenu().getItem(2).setChecked(false);
@@ -186,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+//        searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
+//        searchView.setMenuItem(item);
 
         return true;
     }
@@ -199,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivityForResult(intent, 1);
             return true;
         }
 
@@ -209,10 +213,10 @@ public class MainActivity extends AppCompatActivity {
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.frame, fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
-    private void switchToUserFragment(Integer userId) {
+    public void switchToUserFragment(Integer userId) {
         Bundle bundle = new Bundle();
 
         if (userId == null) {
@@ -227,11 +231,25 @@ public class MainActivity extends AppCompatActivity {
         switchFragment(fragment);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        if (requestCode == 1) {
+            int userId = data.getIntExtra("user_id", -1);
+            if (userId > 0) {
+                switchToUserFragment(userId);
+            }
+        }
+    }
+
+
     private void switchFeedbackFragment() {
         switchFragment(new FeedbackFragment());
     }
 
-    public MaterialSearchView getSearchView() {
-        return searchView;
-    }
+//    public MaterialSearchView getSearchView() {
+//        return searchView;
+//    }
 }
