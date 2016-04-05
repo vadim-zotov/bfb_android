@@ -37,7 +37,7 @@ public interface UserService {
 //                                  @Query("sort_column") String sortColumn,
 //                      @Query("sort_direction") String sortDirections,
 //                      @Query("show_deactivated") boolean showDeactivated,
-//                                  @Query("limit") int limit, @Query("offset") int offset,
+                                  @Query("limit") int limit, @Query("offset") int offset,
                                   @Query("filters") String filters,
                                   @Header("Authorization") String header);
 

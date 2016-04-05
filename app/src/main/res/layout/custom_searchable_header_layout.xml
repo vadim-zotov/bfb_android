@@ -41,7 +41,8 @@
         android:background="#00000000"
         android:imeOptions="actionSearch"
         android:singleLine="true"
-        android:textColor="@color/black">
+        android:textColor="@color/white"
+        android:textCursorDrawable="@drawable/abc_text_cursor_material">
 
         <requestFocus />
     </EditText>

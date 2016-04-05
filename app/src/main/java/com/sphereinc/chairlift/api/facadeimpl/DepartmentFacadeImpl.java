@@ -18,12 +18,12 @@ public class DepartmentFacadeImpl extends BaseFacade implements DepartmentFacade
 
     @Override
     public void getDepartments(Callback<DepartmentsSearchResult> callback) {
-        departmentService.getDepartments(100, 0, getAuthorizationString()).enqueue(callback);
+        departmentService.getDepartments(1000, 0, getAuthorizationString()).enqueue(callback);
     }
 
     @Override
     public void getDepartmentsByName(String departmentName, Callback<DepartmentsSearchResult> callback) {
-        departmentService.getDepartmentsByName(100, 0, "", getAuthorizationString()).enqueue(callback);
+        departmentService.getDepartmentsByName(1000, 0, "", getAuthorizationString()).enqueue(callback);
     }
 
     public void getDepartment(int departmentId, Callback<Department> callback) {
