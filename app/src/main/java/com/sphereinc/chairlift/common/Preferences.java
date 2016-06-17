@@ -34,6 +34,7 @@ public class Preferences {
         setUserMail("");
         setUserRole("");
         setUserAvatarUrl("");
+        setInitials("");
         setRememberLogin(false);
     }
 
@@ -95,6 +96,12 @@ public class Preferences {
         return this;
     }
 
+
+    public Preferences setInitials(String initials) {
+        saveString(Keys.INITIALS, initials);
+        return this;
+    }
+
     public Preferences setUserMail(String userMail) {
         saveString(Keys.USER_MAIL, userMail);
         return this;
@@ -128,6 +135,10 @@ public class Preferences {
 
     public String userName() {
         return getPrefs().getString(Keys.USER_NAME, null);
+    }
+
+    public String initials() {
+        return getPrefs().getString(Keys.INITIALS, null);
     }
 
     public String userRole() {

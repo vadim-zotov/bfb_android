@@ -9,6 +9,7 @@ public class Keys {
     public static final String USER_MAIL = "user_mail";
     public static final String USER_ROLE = "user_role";
     public static final String USER_AVATAR_URL = "user_avatar_url";
+    public static final String INITIALS = "initials";
 
     public static final String USER_FRAGMENT_TYPE = "user_fragment_type";
     public static final String USER_FRAGMENT_TYPE_MY_PROFILE = "user_fragment_type_my_profile";

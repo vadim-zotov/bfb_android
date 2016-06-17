@@ -177,6 +177,12 @@ public class MainActivity extends AppCompatActivity {
         if (Preferences.getInstance().userAvatarUrl() != null) {
             ImageHandler.getSharedInstance(getApplicationContext()).with(getApplicationContext()).
                     load(Preferences.getInstance().userAvatarUrl()).into((CircleImageView) header.findViewById(R.id.iv_profile_image));
+            header.findViewById(R.id.tv_profile).setVisibility(View.GONE);
+            header.findViewById(R.id.iv_profile_image).setVisibility(View.VISIBLE);
+        } else {
+            header.findViewById(R.id.iv_profile_image).setVisibility(View.GONE);
+            header.findViewById(R.id.tv_profile).setVisibility(View.VISIBLE);
+            ((TextView) header.findViewById(R.id.tv_profile)).setText(Preferences.getInstance().initials());
         }
     }
 

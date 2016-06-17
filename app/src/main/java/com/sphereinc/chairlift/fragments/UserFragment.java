@@ -395,11 +395,18 @@ public class UserFragment extends Fragment {
     }
 
     private void storeUserData(User user) {
-        Preferences.getInstance().setUserDepartmentId(user.getDepartment().getId());
+        if (user.getDepartment() != null) {
+            Preferences.getInstance().setUserDepartmentId(user.getDepartment().getId());
+        }
         Preferences.getInstance().setUserName(user.getUserName());
+        Preferences.getInstance().setInitials(user.getInitials());
         Preferences.getInstance().setUserMail(user.getEmail());
-        Preferences.getInstance().setUserAvatarUrl(user.getAvatar().getIcon().getUrl());
-        Preferences.getInstance().setUserRole(user.getJobRole().getTitle());
+        if (user.getAvatar() != null && user.getAvatar().getIcon() != null) {
+            Preferences.getInstance().setUserAvatarUrl(user.getAvatar().getIcon().getUrl());
+        }
+        if (user.getJobRole() != null) {
+            Preferences.getInstance().setUserRole(user.getJobRole().getTitle());
+        }
 
         ((MainActivity) getActivity()).setHeaderData();
     }
@@ -407,7 +414,7 @@ public class UserFragment extends Fragment {
     private void drawData(User user) {
         this.user = user;
 
-        if (user.getAvatar() != null && user.getAvatar().getDashboard().getUrl() != null) {
+        if (user != null && user.getAvatar() != null && user.getAvatar().getDashboard() != null && user.getAvatar().getDashboard().getUrl() != null) {
             ImageHandler.getSharedInstance(getActivity()).load(user.getAvatar().getDashboard().getUrl())
                     .into(_ivProfile, new com.squareup.picasso.Callback() {
                         @Override
@@ -429,10 +436,16 @@ public class UserFragment extends Fragment {
             _tvProfile.setVisibility(View.VISIBLE);
         }
 
-        _tvUserName.setText(user.getUserName());
-        _tvRole.setText(user.getJobRole().getTitle());
-        _tvDepartmentName.setText(user.getDepartment().getName());
+        if (user != null) {
+            _tvUserName.setText(user.getUserName());
+        }
+        if (user.getJobRole() != null) {
+            _tvRole.setText(user.getJobRole().getTitle());
+        }
 
+        if (user.getDepartment() != null) {
+            _tvDepartmentName.setText(user.getDepartment().getName());
+        }
 
         if (user.getAbout() != null) {
             _tvAbout.setText(user.getAbout());
@@ -440,7 +453,9 @@ public class UserFragment extends Fragment {
             _lytAbout.setVisibility(View.GONE);
         }
 
-        _tvProfile.setText(user.getInitials());
+        if (user != null) {
+            _tvProfile.setText(user.getInitials());
+        }
 
         if (user.getLocation() != null) {
             _tvLocation.setText(user.getLocation().getCity());
@@ -542,23 +557,24 @@ public class UserFragment extends Fragment {
         }
 
 
-        if (user.getRequiredSkills().isEmpty() && user.getAdditionalSkills().isEmpty() &&
-                user.getInterests().isEmpty()) {
+        if ((user.getRequiredSkills() == null || user.getRequiredSkills().isEmpty()) &&
+                (user.getAdditionalSkills() == null || user.getAdditionalSkills().isEmpty()) &&
+                (user.getInterests() == null || user.getInterests().isEmpty())) {
             _cardSkillsParent.setVisibility(View.GONE);
         } else {
-            if (user.getRequiredSkills().isEmpty()) {
+            if (user.getRequiredSkills() == null || user.getRequiredSkills().isEmpty()) {
                 _rlytJobRelated.setVisibility(View.GONE);
             } else {
                 _rlytJobRelated.setVisibility(View.VISIBLE);
             }
 
-            if (user.getAdditionalSkills().isEmpty()) {
+            if (user.getAdditionalSkills() == null || user.getAdditionalSkills().isEmpty()) {
                 _rlytAdditionalSkills.setVisibility(View.GONE);
             } else {
                 _rlytAdditionalSkills.setVisibility(View.VISIBLE);
             }
 
-            if (user.getInterests().isEmpty()) {
+            if (user.getInterests() == null || user.getInterests().isEmpty()) {
                 _rlytInterests.setVisibility(View.GONE);
             } else {
                 _rlytInterests.setVisibility(View.VISIBLE);

@@ -47,4 +47,6 @@
     <string name="loading">Loading</string>
 
     <string name="error_no_internet_connection">No internet connection</string>
+
+    <string name="empty_search_result">No employees match the criteria</string>
 </resources>

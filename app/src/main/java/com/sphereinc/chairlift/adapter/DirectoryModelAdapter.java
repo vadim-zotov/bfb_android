@@ -232,7 +232,9 @@ public class DirectoryModelAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
 
                 userViewHolder._tvUserName.setText(userModel.getUser().getUserName());
-                userViewHolder._tvRole.setText(userModel.getUser().getJobRole().getTitle());
+                if(userModel.getUser().getJobRole() != null) {
+                    userViewHolder._tvRole.setText(userModel.getUser().getJobRole().getTitle());
+                }
                 userViewHolder._tvProfile.setText(userModel.getUser().getInitials());
                 if (userModel.getUser().getLocation() != null) {
                     userViewHolder._tvLocation.setText(userModel.getUser().getLocation().getCity());

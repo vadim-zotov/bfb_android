@@ -6,14 +6,32 @@
     android:background="@color/primary"
     android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_profile_image"
+
+    <FrameLayout
         android:layout_width="76dp"
         android:layout_height="76dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="24dp"
-        android:layout_marginRight="10dp"
-        app:border_color="#FF000000" />
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/round_corner_38"
+            android:gravity="center"
+            android:textColor="@color/primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_image"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_gravity="center_vertical"
+            app:border_color="#FF000000" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

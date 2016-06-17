@@ -177,7 +177,8 @@
                         <LinearLayout
                             android:id="@+id/lyt_about"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
                                 style="@style/TextView.Header.Base"
@@ -190,9 +191,7 @@
                             <TextView
                                 android:id="@+id/tv_about"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left"
-                                android:gravity="left" />
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>

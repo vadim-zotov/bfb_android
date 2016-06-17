@@ -7,7 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.sphereinc.chairlift.R;
 import com.sphereinc.chairlift.adapter.UserAdapter;
@@ -29,6 +31,9 @@ public class SearchActivity extends AppCompatActivity {
 
     @Bind(R.id.cs_result_list)
     RecyclerView searchResultList;
+
+    @Bind(R.id.empty_results)
+    TextView emptySearchResult;
 
     private UserFacade userFacade = new UserFacadeImpl();
     public String nextSearchString;
@@ -90,17 +95,24 @@ public class SearchActivity extends AppCompatActivity {
                 if (nextSearchString.isEmpty()) {
                     UserSearchResult result = response.body();
                     if (result != null && result.getUsers() != null) {
+                        if (result.getUsers().size() > 0) {
+                            searchResultList.setVisibility(View.VISIBLE);
+                            emptySearchResult.setVisibility(View.GONE);
 
-                        searchResultList.swapAdapter(new UserAdapter(result.getUsers(),
-                                new UserAdapter.OnUserClickListener() {
-                                    @Override
-                                    public void onItemClick(int userId) {
-                                        Intent intent = new Intent();
-                                        intent.putExtra("user_id", userId);
-                                        setResult(RESULT_OK, intent);
-                                        finish();
-                                    }
-                                }), false);
+                            searchResultList.swapAdapter(new UserAdapter(result.getUsers(),
+                                    new UserAdapter.OnUserClickListener() {
+                                        @Override
+                                        public void onItemClick(int userId) {
+                                            Intent intent = new Intent();
+                                            intent.putExtra("user_id", userId);
+                                            setResult(RESULT_OK, intent);
+                                            finish();
+                                        }
+                                    }), false);
+                        } else {
+                            searchResultList.setVisibility(View.GONE);
+                            emptySearchResult.setVisibility(View.VISIBLE);
+                        }
 
                     }
                     searchInProgress = false;

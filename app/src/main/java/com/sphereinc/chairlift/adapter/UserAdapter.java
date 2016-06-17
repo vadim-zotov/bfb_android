@@ -108,7 +108,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
 
         holder._tvUserName.setText(user.getUserName());
-        holder._tvRole.setText(user.getJobRole().getTitle());
+        if (user.getJobRole() != null) {
+            holder._tvRole.setText(user.getJobRole().getTitle());
+        }
         holder._tvProfile.setText(user.getInitials());
         if (user.getLocation() != null) {
             holder._tvLocation.setText(user.getLocation().getCity());
